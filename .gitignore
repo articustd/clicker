@@ -1,8 +1,0 @@
-.vscode
-node_modules
-package-lock.json
-/dist/index.html
-/dist/*.js
-/dist/*.css
-/story/modules/main.min.css
-/story/modules/story.bundle.js
