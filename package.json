@@ -1,0 +1,61 @@
+{
+  "name": "village",
+  "version": "1.0.0",
+  "description": "Village Twine Game",
+  "main": "index.js",
+  "scripts": {
+    "build": "gulp build",
+    "build:bundle": "gulp bundle",
+    "build:twee": "gulp buildTwee",
+    "build:sass": "gulp buildSass",
+    "config:dev": "gulp configDev",
+    "config:prod": "gulp configProd",
+    "clean:twee": "Remove-Item ./index.html",
+    "clean:sass": "Remove-Item ./story/modules/main.min.css",
+    "clean:bundle": "Remove-Item ./story/modules/story.bundle.js",
+    "watch:dev": "gulp watchDev",
+    "webpack": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/articustd/village.git"
+  },
+  "keywords": [
+    "twine"
+  ],
+  "author": "ArticusTD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/articustd/village/issues"
+  },
+  "homepage": "https://github.com/articustd/village#readme",
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/plugin-external-helpers": "^7.16.7",
+    "@babel/plugin-transform-modules-commonjs": "^7.17.9",
+    "@babel/preset-env": "^7.16.11",
+    "@types/drawflow": "^0.0.4",
+    "babel-loader": "^8.2.5",
+    "babel-plugin-transform-commonjs": "^1.1.6",
+    "babel-preset-env": "^1.7.0",
+    "browser-sync": "^2.27.9",
+    "css-loader": "^6.7.1",
+    "drawflow": "^0.0.58",
+    "eventemitter3": "^4.0.7",
+    "gulp": "^4.0.2",
+    "gulp-babel": "^8.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-file": "^0.4.0",
+    "gulp-noop": "^1.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "lodash": "^4.17.21",
+    "phaser": "^3.55.2",
+    "sass": "^1.50.1",
+    "style-loader": "^3.3.1",
+    "terser-webpack-plugin": "^5.3.1",
+    "webpack": "^5.72.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-stream": "^7.0.0"
+  }
+}

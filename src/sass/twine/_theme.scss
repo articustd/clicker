@@ -1,0 +1,7 @@
+$background-color: #111;
+$hover-color: #111;
+
+@mixin button {
+    margin: 5px;
+    height: 40px;
+}

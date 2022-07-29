@@ -1,0 +1,91 @@
+@use '../twine/theme';
+
+@mixin header {
+    align-self: center;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.events {
+    display: flex;
+    // border: 1px solid;
+
+    &-wrapper {
+        @extend .events;
+    }
+
+    &-story {
+        @extend .events;
+        flex-direction: column;
+        flex: 5;
+        height: 40em;
+
+        &>.header {
+            @include header;
+        }
+
+        &-body {
+            overflow-y: auto;
+            /* width */
+            &::-webkit-scrollbar {
+                width: 10px;
+            }
+
+            /* Track */
+            &::-webkit-scrollbar-track {
+                background: #f1f1f1;
+                border-radius: 5px;
+            }
+
+            /* Handle */
+            &::-webkit-scrollbar-thumb {
+                background: #888;
+                border-radius: 5px;
+            }
+
+            /* Handle on hover */
+            &::-webkit-scrollbar-thumb:hover {
+                background: #555;
+            }
+
+            &>.gray {
+                background-color: #555
+            }
+
+            &>div {
+                padding: 5px;
+            }
+        }
+    }
+
+    &-interactions {
+        @extend .events;
+        flex-direction: column;
+        flex: 4;
+
+        &>.header {
+            @include header;
+        }
+
+        &>button {
+            height: 40px;
+            margin: 10px 20px;
+
+            &:disabled {
+                background: linear-gradient(#444, #444) no-repeat;
+                background-position: center;
+                background-size: 0% 0%;
+                border: 0px;
+            }
+
+            &.red{
+                background-color: #ff0000;
+                border-color: #ff4e4e;
+            }
+        }
+
+        &>.hide {
+            display: none;
+        }
+    }
+}

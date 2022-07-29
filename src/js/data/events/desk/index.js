@@ -1,0 +1,1 @@
+export { deskPickupGolem } from './pickupGolem'

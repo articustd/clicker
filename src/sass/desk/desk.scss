@@ -1,0 +1,38 @@
+@use '../twine/theme';
+
+.desk {
+    display: flex;
+    
+    &-wrapper {
+        @extend .desk;
+    }
+
+    &-list {
+        @extend .desk;
+        flex-direction: column;
+        flex: 2;
+
+        & button {
+            @include theme.button;
+        }
+    }
+
+    &-commands {
+        display: none;
+        flex: 4;
+
+        & .items {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+
+            & button {
+                @include theme.button;
+            }
+        }
+
+        &.desk-visable {
+            display: flex;
+        }
+    }
+}
