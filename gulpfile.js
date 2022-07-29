@@ -8,22 +8,21 @@ const   { src, dest, watch, series, task } = require('gulp'),
         { spawn } = require('child_process'),
         { platform } = require('os'),
         path = require('path'),
-        browserSync = require('browser-sync').create();
+        browserSync = require('browser-sync').create()
 
 // Compile SASS into working CSS
 task(function buildSass() {
     return src('src/sass/main.scss')
         .pipe(sass({outputStyle: 'compressed'}).on('error', sass.logError))
-        .pipe(rename('main.min.css'))
-        .pipe(dest('story/modules'))
+        .pipe(rename('style.min.css'))
+        .pipe(dest('dist/'))
 })
 
 // Bundle JS into story dir
 task(function bundle() {
     return src('src/js/index.js')
         .pipe(webpack(require('./webpack.config.js'),compiler,function(err, stats){}))
-        .pipe(rename('story.bundle.js'))
-        .pipe(dest('story/modules'))
+        .pipe(dest('dist/'))
 })
 
 // Configure Environments
@@ -58,11 +57,11 @@ function reload(cb) {
 
 // Watch Tasks
 task(function watching() {
-    watch('src/js', task('bundle'))
-    watch('src/sass', task('buildSass'))
+    watch('src/js', series('bundle', reload))
+    watch('src/sass', series('buildSass', reload))
 })
 
-task('build', series('bundle','buildSass','buildTwee'))
+task('build', series('buildSass', 'bundle'))
 
-task('watchDev', series('bundle','buildSass', 'buildTwee', serve, 'watching'))
+task('watchDev', series('buildSass', 'bundle', serve, 'watching'))
 task('default', task('watchDev'))

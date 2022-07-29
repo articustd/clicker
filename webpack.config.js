@@ -1,11 +1,13 @@
 const path = require('path');
 const TerserPlugin = require("terser-webpack-plugin");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackTagsPlugin = require('html-webpack-tags-plugin');
 
 module.exports = {
     mode: 'production',
     entry: './src/js/index.js',
     output: {
-        filename: 'story.bundle.js'
+        filename: 'game.bundle.js'
     },
     target: 'web',
     module: {
@@ -35,6 +37,10 @@ module.exports = {
         },
         extensions: ['.js', '.json']
     },
+    plugins: [
+        new HtmlWebpackPlugin(),
+        new HtmlWebpackTagsPlugin({ tags: ['style.min.css'], append: true }) 
+    ],
     optimization: {
         minimize: true,
         minimizer: [new TerserPlugin({
