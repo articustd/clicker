@@ -1,6 +1,6 @@
 import { logger } from '@util/Logging';
 import { Game } from 'phaser'
-import { ClickGame } from './scenes/ClickGame'
+import { ClickGame, DemoScene } from './scenes';
 
 let config = {
     type: Phaser.AUTO,
@@ -12,7 +12,7 @@ let config = {
             gravity: { y: 200 }
         }
     },
-    scene: ClickGame
+    scene: [ClickGame]
 };
 
 export let game = new Game(config);

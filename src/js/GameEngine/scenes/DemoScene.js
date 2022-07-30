@@ -1,15 +1,13 @@
 import { logger } from "@util/Logging";
-import { Geom, Scene } from "phaser";
-import { ClickMenus } from "./ClickMenus";
-import { DemoScene } from "./DemoScene";
+import { Scene } from "phaser";
 
-export class ClickGame extends Scene {
+export class DemoScene extends Scene {
     text1
     text2
     lastTime
 
-    constructor() {
-        super({ key: 'ClickGame' })
+    constructor () {
+        super({key:'DemoScene'})
     }
 
     preload() {
@@ -21,12 +19,9 @@ export class ClickGame extends Scene {
     }
 
     create() {
-        let sky = this.add.image(400, 300, 'sky').setInteractive();
-        let { width, height } = this.game.canvas
-
-        sky.on('pointerdown', () => {
-            console.log('Clicked background')
-        })
+        this.lastTime = this.game.getTime()
+        let sky = this.add.image(400, 300, 'sky');
+        sky.alpha = 0.5
 
         var particles = this.add.particles('red');
 
@@ -50,6 +45,7 @@ export class ClickGame extends Scene {
         this.input.mouse.disableContextMenu()
 
         this.input.on('pointerup', (pointer) => {
+            logger('In DemoScene')
             if (pointer.leftButtonReleased())
                 this.text2.setText('Left Button Released')
             if (pointer.rightButtonReleased())
@@ -74,8 +70,6 @@ export class ClickGame extends Scene {
             if (pointer.forwardButtonDown())
                 this.text2.setText('Forward Button Down')
         })
-
-        this.scene.add('ClickMenus', ClickMenus, true)
     }
 
     update(time, delta) {
@@ -84,7 +78,7 @@ export class ClickGame extends Scene {
         // Check to see if player tabbed out of game
         if (time - this.lastTime > delta + 1000) {
             logger(`Time over normal`)
-            logger({ delta, time, lastTime: this.lastTime, timeDiff: time - this.lastTime })
+            logger({delta, time, lastTime: this.lastTime, timeDiff: time - this.lastTime})
         }
         this.lastTime = time
 
