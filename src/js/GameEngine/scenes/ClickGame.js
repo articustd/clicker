@@ -1,7 +1,7 @@
 import { logger } from "@util/Logging";
 import { Geom, Scene } from "phaser";
 import { ClickMenus } from "./ClickMenus";
-import { Counters } from "./Counters";
+import { Counters } from "./ClickCounters";
 import { DemoScene } from "./DemoScene";
 
 export class ClickGame extends Scene {

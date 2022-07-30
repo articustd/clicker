@@ -20,7 +20,7 @@ export class Counters extends Scene {
         this.Size = 0
         this.Currency = 0
         
-        this.CounterText = this.add.text((width/2)-20, 50, '', { fill: '#00ff00' });
+        this.CounterText = this.add.text((width/2)-40, 50, '', { fill: '#00ff00' });
         this.setCounterText()
     }
 
