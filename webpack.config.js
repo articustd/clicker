@@ -38,7 +38,9 @@ module.exports = {
         extensions: ['.js', '.json']
     },
     plugins: [
-        new HtmlWebpackPlugin(),
+        new HtmlWebpackPlugin({
+            title: "Clicker Game"
+        }),
         new HtmlWebpackTagsPlugin({ tags: ['style.min.css'], append: true }) 
     ],
     optimization: {
