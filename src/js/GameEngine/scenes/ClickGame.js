@@ -1,6 +1,7 @@
 import { logger } from "@util/Logging";
 import { Geom, Scene } from "phaser";
 import { ClickMenus } from "./ClickMenus";
+import { Counters } from "./Counters";
 import { DemoScene } from "./DemoScene";
 
 export class ClickGame extends Scene {
@@ -24,9 +25,7 @@ export class ClickGame extends Scene {
         let sky = this.add.image(400, 300, 'sky').setInteractive();
         let { width, height } = this.game.canvas
 
-        sky.on('pointerdown', () => {
-            console.log('Clicked background')
-        })
+        sky.on('pointerdown', (pointer) => this.clickBackground(pointer))
 
         var particles = this.add.particles('red');
 
@@ -46,6 +45,8 @@ export class ClickGame extends Scene {
 
         this.text1 = this.add.text(10, 10, '', { fill: '#00ff00' });
         this.text2 = this.add.text(10, 85, '', { fill: '#00ff00' });
+        this.text1.visible = false
+        this.text2.visible = false
 
         this.input.mouse.disableContextMenu()
 
@@ -74,8 +75,18 @@ export class ClickGame extends Scene {
             if (pointer.forwardButtonDown())
                 this.text2.setText('Forward Button Down')
         })
-
+        this.input.keyboard.on('keyup', (event) => {
+            if (event.keyCode === 38) {
+                this.text1.visible = true
+                this.text2.visible = true
+            }
+            if (event.keyCode === 40) {
+                this.text1.visible = false
+                this.text2.visible = false
+            }
+        })
         this.scene.add('ClickMenus', ClickMenus, true)
+        this.scene.add('Counters', Counters, true)
     }
 
     update(time, delta) {
@@ -95,5 +106,10 @@ export class ClickGame extends Scene {
             'y: ' + pointer.worldY,
             'isDown: ' + pointer.isDown
         ])
+    }
+
+    clickBackground(pointer) {
+        if (pointer.leftButtonDown())
+            this.scene.get('Counters').countHandler()
     }
 }
