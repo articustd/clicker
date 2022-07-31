@@ -1,8 +1,8 @@
 import { logger } from "@util/Logging";
-import { Geom, Scene } from "phaser";
-import { DemoScene } from "./DemoScene";
+import { Display, Geom, Scene, Scenes } from "phaser";
 
 export class ClickMenus extends Scene {
+
     constructor() {
         super({ key: 'ClickMenus' })
     }
@@ -10,25 +10,35 @@ export class ClickMenus extends Scene {
     preload() {
     }
 
+    init(data) {
+        logger(data)
+        this.title = data.title
+    }
+
     create() {
         let { width, height } = this.game.canvas
-        let sizeUpgrades = this.add.graphics();
-        let currencyUpgrades = this.add.graphics();
-
-        sizeUpgrades.fillStyle(0x00ff00)
-        sizeUpgrades.fillRect(0, 500, 100, 100)
-        sizeUpgrades.setInteractive({ hitArea: new Geom.Rectangle(0, 500, 100, 100), hitAreaCallback: Geom.Rectangle.Contains, cursor: 'pointer' })
-        let sizeText = this.add.text(10, 535, 'Size\nUpgrades', { color: '#000000', align: 'center' });
-        sizeUpgrades.on('pointerdown', () => {
-            logger('Clicked Size Upgrades')
+        let transparentLayer = this.add.rectangle(width/2, height/2, width, height, 0x000000, 0.5).setInteractive({ cursor: 'pointer' });
+        transparentLayer.on('pointerdown', () => {
+            logger('Clicked Menu Background')
+            this.scene.sleep()
         })
 
-        currencyUpgrades.fillStyle(0x00ff00)
-        currencyUpgrades.fillRect(width-100, 500, 100, 100)
-        currencyUpgrades.setInteractive({ hitArea: new Geom.Rectangle(width-100, 500, 100, 100), hitAreaCallback: Geom.Rectangle.Contains, cursor: 'pointer' })
-        let currencyText = this.add.text(width-85, 535, 'Currency\nUpgrades', { color: '#000000', align: 'center' });
-        currencyUpgrades.on('pointerdown', () => {
-            logger('Clicked Currency Upgrades')
+        let [menuWidth, menuHeight] = [width-(100*2), height-(50*2)]
+        let menuWindow = this.add.rectangle(width/2, height/2, menuWidth,menuHeight, 0xffffff).setInteractive();
+        menuWindow.on('pointerdown', () => {
+            logger('Clicked Menu Window')
+        })
+
+        let menuTitleContainer = this.add.rectangle(0, 0, menuWidth, 50, 0xffffff, 0);
+        Display.Align.In.TopCenter(menuTitleContainer, menuWindow)
+
+        this.menuTitle = this.add.text(0, 0, this.title, { color: '#000000'});
+        Display.Align.In.Center(this.menuTitle, menuTitleContainer)
+        
+        this.events.on(Scenes.Events.WAKE, (scene, data) => {
+            this.title = data.title
+            this.menuTitle.setText(this.title)
+            Display.Align.In.Center(this.menuTitle, menuTitleContainer)
         })
     }
 

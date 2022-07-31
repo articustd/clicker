@@ -1,8 +1,8 @@
 import { logger } from "@util/Logging";
 import { Geom, Scene } from "phaser";
-import { ClickMenus } from "./ClickMenus";
+import { ClickButtons } from "./ClickButtons";
 import { Counters } from "./ClickCounters";
-import { DemoScene } from "./DemoScene";
+import { ClickMenus } from "./ClickMenus";
 
 export class ClickGame extends Scene {
     text1
@@ -85,8 +85,9 @@ export class ClickGame extends Scene {
                 this.text2.visible = false
             }
         })
-        this.scene.add('ClickMenus', ClickMenus, true)
+        this.scene.add('ClickButtons', ClickButtons, true)
         this.scene.add('Counters', Counters, true)
+        this.scene.add('ClickMenus', ClickMenus, false)
     }
 
     update(time, delta) {

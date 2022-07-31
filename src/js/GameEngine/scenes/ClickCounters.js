@@ -1,9 +1,8 @@
 import { logger } from "@util/Logging";
-import { Geom, Scene } from "phaser";
-import { DemoScene } from "./DemoScene";
+import { Scene } from "phaser";
 
 export class Counters extends Scene {
-    CounterText
+    CounterTexts
     Size
     Currency
 
