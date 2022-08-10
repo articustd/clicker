@@ -45,6 +45,16 @@ export class ClickMenus extends Scene {
             this.menuItems.push(new MenuItem(this, { ...data, width: 500, height: 60, x, y }))
             y += 60
         })
+
+        this.events.on(Scenes.Events.WAKE, () => {
+            logger("I HAVE AWOKEN")
+            let currency = this.scene.get('Counters').Currency
+            logger(currency)
+            _.each(this.menuItems, (menuItem) => {
+                menuItem.checkBuyable(currency)
+            })
+            // Check every MenuItem to see if they need to be active
+        })
     }
 
     update() { }
@@ -58,6 +68,8 @@ class MenuItem {
     title
 
     constructor(scene, menuItemData) {
+        this.scene = scene
+        this.purchased = false
         _.each(menuItemData, (value, key) => {
             this[key] = value
         })
@@ -95,8 +107,58 @@ class MenuItem {
         Display.Align.In.Center(this.descText, descContainer)
 
         let costContainer = scene.add.rectangle(0, 0, this.width / 4, this.height, 0xff0000, 0);
+        this.costButton = scene.add.rectangle(0, 0, costContainer.width - 10, costContainer.height - 10, 0x808080, 1)
         Display.Align.In.RightCenter(costContainer, container)
+        Display.Align.In.Center(this.costButton, costContainer)
         this.costText = scene.add.text(0, 0, `Cost: ${this.cost}`, { color: '#000000' });
         Display.Align.In.Center(this.costText, costContainer)
+
+        scene.registry.events.on('changedata', this.handler, this)
+
+        this.costButton.on('pointerup', () => {
+            logger('Here')
+            if (this.isPassiveStart)
+                scene.registry.set(`${this.stat}Passive`, true)
+            else
+                this.buttonAction()
+            
+            this.markPurchased()
+        })
+
+        this.checkBuyable(scene.registry.get('currency'))
+    }
+
+    buttonAction() {
+
+    }
+
+    markPurchased() {
+        this.scene.registry.events.off('changedata', this.handler, this)
+        this.purchased = true
+
+        this.costButton.setFillStyle(0xFFFFFF, 0)
+        this.costButton.setStrokeStyle(3, 0x000000, 0)
+        this.costButton.removeInteractive()
+        this.costText.setText('Purchased!')
+
+        this.scene.scene.get('Counters').decreaseCurrency(this.cost)
+    }
+
+    handler(parent, key, data) {
+        logger(this.scene)
+        if (key === 'currency' && !this.purchased)
+            this.checkBuyable(data)
+    }
+
+    checkBuyable(currentCurrency) {
+        if (this.cost <= currentCurrency) {
+            this.costButton.setFillStyle(0x808080, 0)
+            this.costButton.setStrokeStyle(3, 0x000000, 1)
+            this.costButton.setInteractive({ cursor: 'pointer' })
+        } else {
+            this.costButton.setFillStyle(0x808080, 1)
+            this.costButton.setStrokeStyle(3, 0x000000, 0)
+            this.costButton.removeInteractive()
+        }
     }
 }

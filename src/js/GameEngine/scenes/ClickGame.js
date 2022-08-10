@@ -1,5 +1,5 @@
 import { logger } from "@util/Logging";
-import { Geom, Scene } from "phaser";
+import { Geom, Input, Scene } from "phaser";
 import { ClickButtons } from "./ClickButtons";
 import { Counters } from "./ClickCounters";
 import { ClickMenus } from "./ClickMenus";
@@ -84,6 +84,12 @@ export class ClickGame extends Scene {
                 this.text1.visible = false
                 this.text2.visible = false
             }
+            if (event.keyCode === Input.Keyboard.KeyCodes.RIGHT) {
+                this.scene.get('Counters').increaseCount()
+            }
+            if (event.keyCode === Input.Keyboard.KeyCodes.LEFT) {
+                this.scene.get('Counters').decreaseCount()
+            }
         })
         this.scene.add('ClickButtons', ClickButtons, true)
         this.scene.add('Counters', Counters, true)
@@ -112,6 +118,6 @@ export class ClickGame extends Scene {
 
     clickBackground(pointer) {
         if (pointer.leftButtonDown())
-            this.scene.get('Counters').countHandler()
+            this.scene.get('Counters').increaseCount()
     }
 }

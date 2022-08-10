@@ -36,5 +36,5 @@ export class ClickButtons extends Scene {
     }
 }
 
-let sizeUpgrades = [{ title: 'Passive Size Start', desc: 'Starts the passive gain on Size', cost: 1, purchased: false, stat: 'size' }]
-let currencyUpgrades = [{ title: 'Passive Currency Start', desc: 'Starts the passive gain on Currency', cost: 1, purchased: false, stat: 'currency' }]
+let sizeUpgrades = [{ title: 'Passive Size Start', desc: 'Starts the passive gain on Size', cost: 1, purchased: false, stat: 'size', isPassiveStart: true }]
+let currencyUpgrades = [{ title: 'Passive Currency Start', desc: 'Starts the passive gain on Currency', cost: 1, purchased: false, stat: 'currency', isPassiveStart: true }]
