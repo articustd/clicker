@@ -1,10 +1,22 @@
 import { logger } from "@util/Logging";
-import { Scene } from "phaser";
+import { Display, Scene } from "phaser";
 
 export class Counters extends Scene {
     CounterTexts
     _Size
     _Currency
+    currencyClickAmount
+    currencyPassiveAmount
+    currencyPassiveRunning
+    currencyRate
+    currencyTick
+    currencyText
+    sizeClickAmount
+    sizePassiveAmount
+    sizePassiveRunning
+    sizeRate
+    sizeTick
+    sizeText
 
     constructor() {
         super({ key: 'Counters' })
@@ -19,13 +31,56 @@ export class Counters extends Scene {
         this.Size = 0
         this.Currency = 0
 
-        this.CounterText = this.add.text((width / 2) - 40, 50, '', { fill: '#00ff00' });
-        this.setCounterText()
+        this.sizeClickAmount = 1
+        this.currencyClickAmount = 1
 
+        this.sizePassiveAmount = 1
+        this.currencyPassiveAmount = 1
 
+        this.sizePassiveRunning = false
+        this.currencyPassiveRunning = false
+
+        this.sizeRate = 60
+        this.currencyRate = 60
+
+        this.sizeTick = 0
+        this.currencyTick = 0
+
+        let container = this.add.rectangle(width / 2, 100, width, 200, 0x000000, 0)
+        let leftContainer = this.add.rectangle(0, 0, width / 2, 200, 0xFF0000, 0)
+        Display.Align.In.LeftCenter(leftContainer, container)
+        let rightContainer = this.add.rectangle(0, 0, width / 2, 200, 0x0000FF, 0)
+        Display.Align.In.RightCenter(rightContainer, container)
+        this.sizeText = this.add.text(0, 0, '', { fill: '#00ff00', align: 'center' }).setOrigin(0.5);
+        Display.Align.In.Center(this.sizeText, leftContainer)
+        this.currencyText = this.add.text(0, 0, '', { fill: '#00ff00', align: 'center' }).setOrigin(0.5);
+        Display.Align.In.Center(this.currencyText, rightContainer)
+
+        this.setSizeText()
+        this.setCurrencyText()
     }
 
     update() {
+        if (this.sizePassiveRunning) {
+            this.sizeTick += 1
+
+            if (this.sizeTick >= this.sizeRate) {
+                this.Size += this.sizePassiveAmount
+                this.setCounterText()
+                this.sizeTick -= this.sizeRate
+            }
+
+        }
+
+        if (this.currencyPassiveRunning) {
+            this.currencyTick += 1
+
+            if (this.currencyTick >= this.currencyRate) {
+                this.Currency += this.currencyPassiveAmount
+                this.setCounterText()
+                this.currencyTick -= this.currencyRate
+            }
+        }
     }
 
     get Currency() { return this._Currency }
@@ -35,26 +90,61 @@ export class Counters extends Scene {
     set Size(Size) { this._Size = Size; this.registry.set(`size`, this._Size) }
 
     increaseCount() {
-        this.Size += 1
-        this.Currency += 1
+        this.Size += this.sizeClickAmount
+        this.Currency += this.currencyClickAmount
         this.setCounterText()
     }
 
     decreaseCount() {
-        this.Size -= 1
-        this.Currency -= 1
+        this.Size -= this.sizeClickAmount
+        this.Currency -= this.currencyClickAmount
         this.setCounterText()
     }
 
     decreaseCurrency(amount) {
         this.Currency -= amount
-        this.setCounterText()
+        this.setCurrencyText()
     }
 
     setCounterText() {
-        this.CounterText.setText([
-            `Size: ${this._Size}`,
-            `Currency: ${this.Currency}`
+        this.setSizeText()
+        this.setCurrencyText()
+    }
+
+    setSizeText() {
+        this.sizeText.setText([
+            `Size: ${this.Size}`,
+            `Size/s: ${this.getSizePassivePerSec()}`
         ])
+    }
+
+    getSizePassivePerSec() {
+        if (!this.sizePassiveRunning)
+            return 0
+
+        return this.sizePassiveAmount / (this.sizeRate / 60)
+    }
+
+    setCurrencyText() {
+        this.currencyText.setText([
+            `Currency: ${this.Currency}`,
+            `Currency/s: ${this.getCurrencyPassivePerSec()}`
+        ])
+    }
+
+    getCurrencyPassivePerSec() {
+        if (!this.currencyPassiveRunning)
+            return 0
+
+        return this.currencyPassiveAmount / (this.currencyRate / 60)
+    }
+
+    startPassive(type) {
+        if (type === 'currency')
+            this.currencyPassiveRunning = true
+        else
+            this.sizePassiveRunning = true
+
+        this.setCounterText()
     }
 }

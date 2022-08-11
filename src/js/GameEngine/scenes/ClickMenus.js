@@ -51,7 +51,8 @@ export class ClickMenus extends Scene {
             let currency = this.scene.get('Counters').Currency
             logger(currency)
             _.each(this.menuItems, (menuItem) => {
-                menuItem.checkBuyable(currency)
+                if(!menuItem.purchased)
+                    menuItem.checkBuyable(currency)
             })
             // Check every MenuItem to see if they need to be active
         })
@@ -117,10 +118,7 @@ class MenuItem {
 
         this.costButton.on('pointerup', () => {
             logger('Here')
-            if (this.isPassiveStart)
-                scene.registry.set(`${this.stat}Passive`, true)
-            else
-                this.buttonAction()
+            this.buttonAction()
             
             this.markPurchased()
         })
@@ -129,6 +127,13 @@ class MenuItem {
     }
 
     buttonAction() {
+        let counters = this.scene.scene.get('Counters')
+
+        switch(this.action) {
+            case 'PassiveStart':
+                counters.startPassive(this.stat)
+                break
+        }
 
     }
 
@@ -145,7 +150,6 @@ class MenuItem {
     }
 
     handler(parent, key, data) {
-        logger(this.scene)
         if (key === 'currency' && !this.purchased)
             this.checkBuyable(data)
     }
