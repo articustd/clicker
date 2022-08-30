@@ -14,11 +14,11 @@ export class ClickGame extends Scene {
     }
 
     preload() {
-        this.load.setBaseURL('https://labs.phaser.io');
+        // this.load.setBaseURL('https://labs.phaser.io');
 
-        this.load.image('sky', 'assets/skies/space3.png');
-        this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-        this.load.image('red', 'assets/particles/red.png');
+        this.load.image('sky', 'assets/levels/prototype/background/Background1.png');
+        // this.load.image('logo', 'assets/sprites/phaser3-logo.png');
+        // this.load.image('red', 'assets/particles/red.png');
     }
 
     create() {
@@ -27,21 +27,21 @@ export class ClickGame extends Scene {
 
         sky.on('pointerdown', (pointer) => this.clickBackground(pointer))
 
-        var particles = this.add.particles('red');
+        // var particles = this.add.particles('red');
 
-        var emitter = particles.createEmitter({
-            speed: 100,
-            scale: { start: 1, end: 0 },
-            blendMode: 'ADD'
-        });
+        // var emitter = particles.createEmitter({
+        //     speed: 100,
+        //     scale: { start: 1, end: 0 },
+        //     blendMode: 'ADD'
+        // });
 
-        var logo = this.physics.add.image(400, 100, 'logo');
+        // var logo = this.physics.add.image(400, 100, 'logo');
 
-        logo.setVelocity(100, 200);
-        logo.setBounce(1, 1);
-        logo.setCollideWorldBounds(true);
+        // logo.setVelocity(100, 200);
+        // logo.setBounce(1, 1);
+        // logo.setCollideWorldBounds(true);
 
-        emitter.startFollow(logo);
+        // emitter.startFollow(logo);
 
         this.text1 = this.add.text(10, 10, '', { fill: '#00ff00' });
         this.text2 = this.add.text(10, 85, '', { fill: '#00ff00' });
