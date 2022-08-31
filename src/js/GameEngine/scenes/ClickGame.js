@@ -22,9 +22,9 @@ export class ClickGame extends Scene {
     }
 
     create() {
-        let sky = this.add.image(400, 300, 'sky').setInteractive();
         let { width, height } = this.game.canvas
-
+        let sky = this.add.image(width/2, height/2, 'sky').setInteractive();
+        
         sky.on('pointerdown', (pointer) => this.clickBackground(pointer))
 
         // var particles = this.add.particles('red');

@@ -39,7 +39,8 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Clicker Game"
+            title: "Clicker Game",
+            template: "template.html"
         }),
         new HtmlWebpackTagsPlugin({ tags: ['style.min.css'], append: true }) 
     ],

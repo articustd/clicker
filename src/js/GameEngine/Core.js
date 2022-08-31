@@ -4,13 +4,13 @@ import { ClickGame, DemoScene } from './scenes';
 
 let config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 200 }
-        }
+    backgroundColor: '#4488aa',
+    width: 720,
+    height: 1280,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        parent: "phaser-root"
     },
     scene: [ClickGame]
 };

@@ -10,9 +10,10 @@ export class ClickButtons extends Scene {
     }
 
     create() {
+        let buttonDim = 100
         let { width, height } = this.game.canvas
-        let sizeUpgradesButton = this.add.rectangle(50, 550, 100, 100, 0x00ff00).setInteractive({ cursor: 'pointer' });
-        let currencyUpgradesButton = this.add.rectangle(width - 50, 550, 100, 100, 0x00ff00).setInteractive({ cursor: 'pointer' });
+        let sizeUpgradesButton = this.add.rectangle(buttonDim, height - buttonDim, buttonDim, buttonDim, 0x00ff00).setInteractive({ cursor: 'pointer' });
+        let currencyUpgradesButton = this.add.rectangle(width - buttonDim, height-buttonDim, buttonDim, buttonDim, 0x00ff00).setInteractive({ cursor: 'pointer' });
 
         let sizeText = this.add.text(0, 0, 'Size\nUpgrades', { color: '#000000', align: 'center' });
         Display.Align.In.Center(sizeText, sizeUpgradesButton)
