@@ -1,5 +1,6 @@
 import { logger } from "@util/Logging";
 import { Geom, Input, Scene } from "phaser";
+import { CharacterScene } from "./CharacterScene";
 import { ClickButtons } from "./ClickButtons";
 import { Counters } from "./ClickCounters";
 import { ClickMenus } from "./ClickMenus";
@@ -91,6 +92,7 @@ export class ClickGame extends Scene {
                 this.scene.get('Counters').decreaseCount()
             }
         })
+        this.scene.add('Character', CharacterScene, true)
         this.scene.add('ClickButtons', ClickButtons, true)
         this.scene.add('Counters', Counters, true)
         this.scene.add('SizeUpgradeMenu', ClickMenus, false, {title: "Size Upgrades", menu: "sizeUpgrades"})
