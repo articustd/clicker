@@ -1,8 +1,15 @@
+import { logger } from "@util/Logging"
 import { Scene } from "phaser"
 
 export class CharacterScene extends Scene {
+    defaultScale
+    currentScale
+
     constructor() {
         super({ key: 'Character' })
+
+        this.defaultScale = 0.35
+        this.currentScale = this.defaultScale
     }
 
     preload() {
@@ -15,7 +22,20 @@ export class CharacterScene extends Scene {
 
     create() {
         let { width, height } = this.game.canvas
-        let character = this.add.image(width/2, height - (height/3), 'character');
-        character.setScale(0.35)
+        this.character = this.add.image(width/2, height - (height/6), 'character');
+        this.character.setOrigin(0.5, 1)
+        this.character.setScale(this.defaultScale)
+        
+        this.registry.events.on('changedata', this.updateScale, this)
+    }
+
+    updateScale(parent, key, data) {
+        if(key === 'size') {
+            // logger({parent, key, data})
+            // logger(this.character)
+            this.currentScale += 0.01
+            this.character.setScale(this.currentScale)
+        }
+            
     }
 }
