@@ -8,7 +8,7 @@ export class BackgroundScene extends Scene {
         this.backgroundData = [
             {name: "background-1", path: "assets/levels/prototype/background/Background1.png", end: 50},
             {name: "background-2", path: "assets/levels/prototype/background/Background2.png", end: 100},
-            {name: "background-3", path: "assets/levels/prototype/background/Background3Back.png", end: 150}
+            {name: "background-3", path: "assets/levels/prototype/background/Background3Back.png", end: -1}
         ]
 
         this.currentBackground = 0
@@ -37,7 +37,7 @@ export class BackgroundScene extends Scene {
 
         this.background = this.add.image(width/2, height/2, name).setInteractive();
         this.background.on('pointerdown', (pointer) => this.clickBackground(pointer))
-        
+
         this.endSize = end
     }
 
@@ -45,7 +45,7 @@ export class BackgroundScene extends Scene {
         if (key !== 'size')
             return
 
-        if (data >= this.endSize) {
+        if (data >= this.endSize && this.endSize > 0) {
             this.background.destroy()
             this.currentBackground += 1
 

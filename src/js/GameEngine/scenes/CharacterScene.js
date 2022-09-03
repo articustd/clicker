@@ -11,7 +11,7 @@ export class CharacterScene extends Scene {
         this.characterData = [
             { name: "character-1", path: "assets/levels/prototype/character/Model-1.png", end: 50 },
             { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 100 },
-            { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: 150 }
+            { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: -1 }
         ]
 
         this.defaultScale = 0.35
@@ -38,7 +38,7 @@ export class CharacterScene extends Scene {
         this.currentScale += 0.01
         this.character.setScale(this.currentScale)
 
-        if (data >= this.endSize) {
+        if (data >= this.endSize && this.endSize > 0) {
             this.character.destroy()
             this.currentCharacter += 1
 
