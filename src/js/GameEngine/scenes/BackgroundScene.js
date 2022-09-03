@@ -21,12 +21,8 @@ export class BackgroundScene extends Scene {
     }
 
     create() {
-        let { width, height } = this.game.canvas
-        let {name, end} = this.backgroundData[this.currentBackground]
-        this.background = this.add.image(width/2, height/2, name).setInteractive();
-        this.endSize = end
+        this.createBackgroundImage()
         
-        this.background.on('pointerdown', (pointer) => this.clickBackground(pointer))
         this.registry.events.on('changedata', this.updateScale, this)
     }
 
@@ -35,19 +31,25 @@ export class BackgroundScene extends Scene {
             this.scene.get('Counters').increaseCount()
     }
 
+    createBackgroundImage() {
+        let { width, height } = this.game.canvas
+        let {name, end} = this.backgroundData[this.currentBackground]
+
+        this.background = this.add.image(width/2, height/2, name).setInteractive();
+        this.background.on('pointerdown', (pointer) => this.clickBackground(pointer))
+        
+        this.endSize = end
+    }
+
     updateScale(parent, key, data) {
         if (key !== 'size')
             return
 
         if (data >= this.endSize) {
             this.background.destroy()
-            let { width, height } = this.game.canvas
             this.currentBackground += 1
-            let {name, end} = this.backgroundData[this.currentBackground]
-            this.background = this.add.image(width/2, height/2, name).setInteractive();
-            this.endSize = end
 
-            this.background.on('pointerdown', (pointer) => this.clickBackground(pointer))
+            this.createBackgroundImage()
         }
     }
 }

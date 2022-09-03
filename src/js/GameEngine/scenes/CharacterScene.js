@@ -26,12 +26,7 @@ export class CharacterScene extends Scene {
     }
 
     create() {
-        let { width, height } = this.game.canvas
-        let {name, end} = this.characterData[this.currentCharacter]
-        this.character = this.add.image(width / 2, height - (height / 6), name);
-        this.character.setOrigin(0.5, 0.9)
-        this.character.setScale(this.defaultScale)
-        this.endSize = end
+        this.createCharacterImage()
 
         this.registry.events.on('changedata', this.updateScale, this)
     }
@@ -45,14 +40,21 @@ export class CharacterScene extends Scene {
 
         if (data >= this.endSize) {
             this.character.destroy()
-            let { width, height } = this.game.canvas
             this.currentCharacter += 1
-            let {name, end} = this.characterData[this.currentCharacter]
-            this.character = this.add.image(width / 2, height - (height / 6), name);
-            this.character.setOrigin(0.5, 0.9)
-            this.character.setScale(this.defaultScale)
-            this.currentScale = this.defaultScale
-            this.endSize = end
+
+            this.createCharacterImage()
         }
+    }
+
+    createCharacterImage() {
+        let { width, height } = this.game.canvas
+        let { name, end } = this.characterData[this.currentCharacter]
+
+        this.character = this.add.image(width / 2, height - (height / 6), name);
+        this.character.setOrigin(0.5, 0.9)
+        this.character.setScale(this.defaultScale)
+
+        this.currentScale = this.defaultScale
+        this.endSize = end
     }
 }
