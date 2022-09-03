@@ -33,6 +33,7 @@ module.exports = {
             "@util": path.resolve(__dirname, 'src', 'js', 'controller', 'util'),
             "@controller": path.resolve(__dirname, 'src', 'js', 'controller'),
             "@GameEngine": path.resolve(__dirname, 'src', 'js', 'GameEngine'),
+            "@Scenes": path.resolve(__dirname, 'src', 'js', 'GameEngine', 'scenes'),
             "@js": path.resolve(__dirname, 'src', 'js')
         },
         extensions: ['.js', '.json']

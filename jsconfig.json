@@ -9,6 +9,7 @@
             "@util/*": ["src/js/controller/util/*"],
             "@controller/*": ["src/js/controller/*"],
             "@GameEngine/*": ["src/js/GameEngine/*"],
+            "@Scenes/*": ["src/js/GameEngine/scenes/*"],
             "@js/*": ["src/js/*"]
         }
     },
