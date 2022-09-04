@@ -23,10 +23,10 @@ export class ClickGame extends Scene {
         
         this.scene.add('Background', BackgroundScene, true)
         this.scene.add('Character', CharacterScene, true)
-        this.scene.add('ClickButtons', ClickButtons, true)
-        this.scene.add('Counters', Counters, true)
         this.scene.add('SizeUpgradeMenu', ClickMenus, false, {title: "Size Upgrades", menu: "sizeUpgrades"})
         this.scene.add('CurrencyUpgradeMenu', ClickMenus, false, {title: "Currency Upgrades", menu: "currencyUpgrades"})
+        this.scene.add('ClickButtons', ClickButtons, true)
+        this.scene.add('Counters', Counters, true)
     }
 
     update(time, delta) {

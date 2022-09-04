@@ -1,10 +1,11 @@
 import { logger } from '@util/Logging';
 import { Game } from 'phaser'
 import { ClickGame, DemoScene } from './scenes';
+import { Theme } from './utils/Theme';
 
 let config = {
     type: Phaser.AUTO,
-    backgroundColor: '#4488aa',
+    backgroundColor: Theme.backgroundColor,
     width: 720,
     height: 1280,
     scale: {

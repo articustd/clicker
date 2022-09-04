@@ -1,3 +1,4 @@
+import { getPrimary, getPrimaryFont, getSecondary } from "@GameEngine/utils/Theme";
 import { logger } from "@util/Logging";
 import { Display, Scene } from "phaser";
 
@@ -46,14 +47,17 @@ export class Counters extends Scene {
         this.sizeTick = 0
         this.currencyTick = 0
 
-        let container = this.add.rectangle(width / 2, 100, width, 200, 0x000000, 0)
+        this.add.rectangle(width / 2, 45, width, 10, getSecondary(), 0.8)
+        this.add.rectangle(width / 2, 155, width, 10, getSecondary(), 0.8)
+        let container = this.add.rectangle(width / 2, 100, width, 100, getPrimary(), 0.9)
+
         let leftContainer = this.add.rectangle(0, 0, width / 2, 200, 0xFF0000, 0)
         Display.Align.In.LeftCenter(leftContainer, container)
         let rightContainer = this.add.rectangle(0, 0, width / 2, 200, 0x0000FF, 0)
         Display.Align.In.RightCenter(rightContainer, container)
-        this.sizeText = this.add.text(0, 0, '', { fill: '#00ff00', align: 'center' }).setOrigin(0.5);
+        this.sizeText = this.add.text(0, 0, '', { fill: getPrimaryFont(true), align: 'center' }).setOrigin(0.5);
         Display.Align.In.Center(this.sizeText, leftContainer)
-        this.currencyText = this.add.text(0, 0, '', { fill: '#00ff00', align: 'center' }).setOrigin(0.5);
+        this.currencyText = this.add.text(0, 0, '', { fill: getPrimaryFont(true), align: 'center' }).setOrigin(0.5);
         Display.Align.In.Center(this.currencyText, rightContainer)
 
         this.setSizeText()

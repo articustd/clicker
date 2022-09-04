@@ -1,3 +1,4 @@
+import { Theme, getPrimary, getSecondary } from "@GameEngine/utils/Theme";
 import { logger } from "@util/Logging";
 import { Display, Geom, Scene } from "phaser";
 
@@ -10,11 +11,12 @@ export class ClickButtons extends Scene {
     }
 
     create() {
-        let buttonDim = 100
+        let buttonDim = 150
         let { width, height } = this.game.canvas
-        let sizeUpgradesButton = this.add.rectangle(buttonDim, height - buttonDim, buttonDim, buttonDim, 0x00ff00).setInteractive({ cursor: 'pointer' });
-        let currencyUpgradesButton = this.add.rectangle(width - buttonDim, height-buttonDim, buttonDim, buttonDim, 0x00ff00).setInteractive({ cursor: 'pointer' });
-
+        let sizeUpgradesButton = this.add.rectangle(buttonDim/2, height - (buttonDim/2), buttonDim, buttonDim, getPrimary()).setInteractive({ cursor: 'pointer' });
+        let currencyUpgradesButton = this.add.rectangle(width - (buttonDim/2), height - (buttonDim/2), buttonDim, buttonDim, getPrimary()).setInteractive({ cursor: 'pointer' });
+        sizeUpgradesButton.setStrokeStyle(10, getSecondary())
+        currencyUpgradesButton.setStrokeStyle(10, getSecondary())
         let sizeText = this.add.text(0, 0, 'Size\nUpgrades', { color: '#000000', align: 'center' });
         Display.Align.In.Center(sizeText, sizeUpgradesButton)
         sizeUpgradesButton.on('pointerdown', () => {

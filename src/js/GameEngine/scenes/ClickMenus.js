@@ -18,7 +18,7 @@ export class ClickMenus extends Scene {
         this.menu = data.menu
         this.menuItems = []
     }
-
+    
     create() {
         let { width, height } = this.game.canvas
         let transparentLayer = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setInteractive({ cursor: 'pointer' });
@@ -27,8 +27,8 @@ export class ClickMenus extends Scene {
             this.scene.sleep()
         })
 
-        let [menuWidth, menuHeight] = [width - (100 * 2), height - (50 * 2)]
-        let menuWindow = this.add.rectangle(width / 2, height / 2, menuWidth, menuHeight, 0xffffff).setInteractive();
+        let [menuWidth, menuHeight] = [width - (100 * 2), height / 2 + 250]
+        let menuWindow = this.add.rectangle(width / 2, height / 2, width, menuHeight, 0xffffff, 0.9).setInteractive();
         menuWindow.on('pointerdown', () => {
             logger('Clicked Menu Window')
         })
@@ -40,9 +40,9 @@ export class ClickMenus extends Scene {
         Display.Align.In.Center(this.menuTitle, menuTitleContainer)
 
         let x = width / 2
-        let y = 140
+        let y = this.menuTitle.y + 100
         _.each(this.registry.get(this.menu), (data) => {
-            this.menuItems.push(new MenuItem(this, { ...data, width: 500, height: 60, x, y }))
+            this.menuItems.push(new MenuItem(this, { ...data, width: width - 100, height: 60, x, y }))
             y += 60
         })
 
