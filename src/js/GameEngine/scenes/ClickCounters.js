@@ -55,9 +55,9 @@ export class Counters extends Scene {
         Display.Align.In.LeftCenter(leftContainer, container)
         let rightContainer = this.add.rectangle(0, 0, width / 2, 200, 0x0000FF, 0)
         Display.Align.In.RightCenter(rightContainer, container)
-        this.sizeText = this.add.text(0, 0, '', { fill: getPrimaryFont(true), align: 'center' }).setOrigin(0.5);
+        this.sizeText = this.add.text(0, 0, '', { fill: getPrimaryFont(true), align: 'center' }).setOrigin(0.5).setLineSpacing(10)
         Display.Align.In.Center(this.sizeText, leftContainer)
-        this.currencyText = this.add.text(0, 0, '', { fill: getPrimaryFont(true), align: 'center' }).setOrigin(0.5);
+        this.currencyText = this.add.text(0, 0, '', { fill: getPrimaryFont(true), align: 'center' }).setOrigin(0.5).setLineSpacing(10)
         Display.Align.In.Center(this.currencyText, rightContainer)
 
         this.setSizeText()
@@ -117,8 +117,9 @@ export class Counters extends Scene {
 
     setSizeText() {
         this.sizeText.setText([
-            `Size: ${this.Size}`,
-            `Size/s: ${this.getSizePassivePerSec()}`
+            `Size`,
+            this.Size,
+            `${this.getSizePassivePerSec()}/s`
         ])
     }
 
@@ -131,8 +132,9 @@ export class Counters extends Scene {
 
     setCurrencyText() {
         this.currencyText.setText([
-            `Currency: ${this.Currency}`,
-            `Currency/s: ${this.getCurrencyPassivePerSec()}`
+            `Currency`,
+            this.Currency,
+            `${this.getCurrencyPassivePerSec()}/s`
         ])
     }
 
