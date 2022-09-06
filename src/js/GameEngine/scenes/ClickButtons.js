@@ -18,7 +18,7 @@ export class ClickButtons extends Scene {
             y: height - (buttonDim / 2),
             dimension: buttonDim,
             outerExtra: 15,
-            callback: () => { this.scene.run('SizeUpgradeMenu') }
+            callback: () => { this.toggleOpen('SizeUpgradeMenu') }
         })
         
         let currencyUpgradesButton = new ButtonBorder(this, {
@@ -26,7 +26,7 @@ export class ClickButtons extends Scene {
             y: height - (buttonDim / 2),
             dimension: buttonDim,
             outerExtra: 15,
-            callback: () => { this.scene.run('CurrencyUpgradeMenu') }
+            callback: () => { this.toggleOpen('CurrencyUpgradeMenu') }
         })
 
         let sizeText = this.add.text(0, 0, 'Size\nUpgrades', { color: getPrimaryFont(true), align: 'center' });
@@ -35,11 +35,17 @@ export class ClickButtons extends Scene {
         let currencyText = this.add.text(0, 0, 'Currency\nUpgrades', { color: getPrimaryFont(true), align: 'center' });
         Display.Align.In.Center(currencyText, currencyUpgradesButton.innerRect)
 
-        this.registry.set('sizeUpgrades', sizeUpgrades)
-        this.registry.set('currencyUpgrades', currencyUpgrades)
+        
     }
 
     update() {
+    }
+
+    toggleOpen(menuName) {
+        if(this.scene.isSleeping(menuName))
+            this.scene.run(menuName)
+        else
+            this.scene.sleep(menuName)
     }
 }
 
@@ -88,5 +94,3 @@ class ButtonBorder {
     get innerRect() { return this._innerRect }
 }
 
-let sizeUpgrades = [{ title: 'Passive Size Start', desc: 'Starts the passive gain on Size', cost: 1, purchased: false, stat: 'size', action: 'PassiveStart' }]
-let currencyUpgrades = [{ title: 'Passive Currency Start', desc: 'Starts the passive gain on Currency', cost: 1, purchased: false, stat: 'currency', action: 'PassiveStart' }]

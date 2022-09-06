@@ -16,6 +16,7 @@ export class ClickMenus extends Scene {
     init(data) {
         this.title = data.title
         this.menu = data.menu
+        this.sleepMenu = data.sleepMenu
         this.menuItems = []
     }
     
@@ -47,15 +48,17 @@ export class ClickMenus extends Scene {
         })
 
         this.events.on(Scenes.Events.WAKE, () => {
-            logger("I HAVE AWOKEN")
+            this.scene.sleep(this.sleepMenu)
             let currency = this.scene.get('Counters').Currency
-            logger(currency)
+            
             _.each(this.menuItems, (menuItem) => {
                 if(!menuItem.purchased)
                     menuItem.checkBuyable(currency)
             })
             // Check every MenuItem to see if they need to be active
         })
+
+        this.scene.sleep()
     }
 
     update() { }
