@@ -10,8 +10,8 @@ export class CharacterScene extends Scene {
 
         this.characterData = [
             { name: "character-1", path: "assets/levels/prototype/character/Model-1.png", end: 50 },
-            { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 100 },
-            { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: -1 }
+            { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 100 , originY: 0.95, y: 1200},
+            { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: -1, originY: 0.95, y: 1200 }
         ]
 
         this.defaultScale = 0.35
@@ -48,10 +48,15 @@ export class CharacterScene extends Scene {
 
     createCharacterImage() {
         let { width, height } = this.game.canvas
-        let { name, end } = this.characterData[this.currentCharacter]
+        let { name, end, originY, y } = this.characterData[this.currentCharacter]
 
-        this.character = this.add.image(width / 2, height - (height / 6), name);
-        this.character.setOrigin(0.5, 0.9)
+        if(!originY)
+            originY = 0.9
+        if(!y)
+            y = height - (height / 6)
+
+        this.character = this.add.image(width / 2, y, name);
+        this.character.setOrigin(0.5, originY)
         this.character.setScale(this.defaultScale)
 
         this.currentScale = this.defaultScale
