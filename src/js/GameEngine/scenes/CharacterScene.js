@@ -9,14 +9,16 @@ export class CharacterScene extends Scene {
         super({ key: 'Character' })
 
         this.characterData = [
-            { name: "character-1", path: "assets/levels/prototype/character/Model-1.png", end: 50 },
-            { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 100 , originY: 0.95, y: 1200},
-            { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: -1, originY: 0.95, y: 1200 }
+            { name: "character-1", path: "assets/levels/prototype/character/Model-1.png", end: 100, endingScale: 1 },
+            { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 300 , endingScale: 0.6, originY: 0.95, y: 1200},
+            { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: -1, scaleIncrement: 0.002, originY: 0.95, y: 1200 }
         ]
 
         this.defaultScale = 0.35
+        this.defaultModifier = 0.01
         this.currentScale = this.defaultScale
         this.currentCharacter = 0
+        this.endSize = 0
     }
 
     preload() {
@@ -26,6 +28,7 @@ export class CharacterScene extends Scene {
     }
 
     create() {
+        this.scaleModifier = this.defaultModifier
         this.createCharacterImage()
 
         this.registry.events.on('changedata', this.updateScale, this)
@@ -35,7 +38,7 @@ export class CharacterScene extends Scene {
         if (key !== 'size')
             return
 
-        this.currentScale += 0.01
+        this.currentScale += this.scaleModifier
         this.character.setScale(this.currentScale)
 
         if (data >= this.endSize && this.endSize > 0) {
@@ -48,18 +51,29 @@ export class CharacterScene extends Scene {
 
     createCharacterImage() {
         let { width, height } = this.game.canvas
-        let { name, end, originY, y } = this.characterData[this.currentCharacter]
+        let { name, end, originY, y, startingScale, endingScale, scaleIncrement } = this.characterData[this.currentCharacter]
+
+        this.scaleModifier = this.defaultModifier
 
         if(!originY)
             originY = 0.9
         if(!y)
             y = height - (height / 6)
+        if (!startingScale)
+            startingScale = this.defaultScale
+        if (!endingScale)
+            endingScale = 1
+
+        if (scaleIncrement)
+            this.scaleModifier = scaleIncrement
+        if(!scaleIncrement && end > 0)
+            this.scaleModifier = _.round((endingScale-startingScale)/(end - this.endSize), 3)
 
         this.character = this.add.image(width / 2, y, name);
         this.character.setOrigin(0.5, originY)
-        this.character.setScale(this.defaultScale)
+        this.character.setScale(startingScale)
 
-        this.currentScale = this.defaultScale
+        this.currentScale = startingScale
         this.endSize = end
     }
 }

@@ -6,8 +6,8 @@ export class BackgroundScene extends Scene {
         super({ key: 'Background' })
 
         this.backgroundData = [
-            {name: "background-1", path: "assets/levels/prototype/background/Background1.png", end: 50},
-            {name: "background-2", path: "assets/levels/prototype/background/Background2.png", end: 100},
+            {name: "background-1", path: "assets/levels/prototype/background/Background1.png", end: 100},
+            {name: "background-2", path: "assets/levels/prototype/background/Background2.png", end: 300},
             {name: "background-3", path: "assets/levels/prototype/background/Background3Back.png", end: -1}
         ]
 
