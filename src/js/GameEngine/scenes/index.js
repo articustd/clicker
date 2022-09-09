@@ -1,8 +1,9 @@
 export { ClickGame } from './ClickGame'
 export { DemoScene } from './DemoScene'
-export { BackgroundScene } from './BackgroundScene'
-export { CharacterScene } from './CharacterScene'
-export { ClickButtons } from './ClickButtons'
-export { ClickCounters } from './ClickCounters'
-export { ClickMenus } from './ClickMenus'
-export { Counters } from './ClickCounters'
+
+export * from './Image'
+
+export { ClickButtons } from './UI/ClickButtons'
+export { ClickCounters } from './UI/ClickCounters'
+export { ClickMenus } from './UI/ClickMenus'
+export { Counters } from './UI/ClickCounters'

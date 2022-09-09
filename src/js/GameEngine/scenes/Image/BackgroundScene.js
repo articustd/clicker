@@ -50,6 +50,7 @@ export class BackgroundScene extends Scene {
             this.currentBackground += 1
 
             this.createBackgroundImage()
+            this.scene.get('Foreground').updateForeground(this.currentBackground)
         }
     }
 }
