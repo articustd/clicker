@@ -8,8 +8,8 @@ export class ClickButtons extends Scene {
     }
 
     preload() {
-        this.load.image('close-eye', '/assets/ui/close-eye.png');
-        this.load.image('open-eye', '/assets/ui/open-eye.png');
+        this.load.image('close-eye', 'assets/ui/close-eye.png');
+        this.load.image('open-eye', 'assets/ui/open-eye.png');
     }
 
     create() {
