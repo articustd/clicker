@@ -47,9 +47,9 @@ export class Counters extends Scene {
         this.sizeTick = 0
         this.currencyTick = 0
 
-        this.add.rectangle(width / 2, 45, width, 10, getSecondary(), 0.8)
-        this.add.rectangle(width / 2, 155, width, 10, getSecondary(), 0.8)
-        let container = this.add.rectangle(width / 2, 100, width, 100, getPrimary(), 0.9)
+        this.add.rectangle(width / 2, 60, width, 10, getSecondary(), 0.8)
+        this.add.rectangle(width / 2, 170, width, 10, getSecondary(), 0.8)
+        let container = this.add.rectangle(width / 2, 115, width, 100, getPrimary(), 0.9)
 
         let leftContainer = this.add.rectangle(0, 0, width / 2, 200, 0xFF0000, 0)
         Display.Align.In.LeftCenter(leftContainer, container)

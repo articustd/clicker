@@ -8,6 +8,8 @@ export class ClickButtons extends Scene {
     }
 
     preload() {
+        this.load.image('close-eye', '/assets/ui/close-eye.png');
+        this.load.image('open-eye', '/assets/ui/open-eye.png');
     }
 
     create() {
@@ -20,7 +22,7 @@ export class ClickButtons extends Scene {
             outerExtra: 15,
             callback: () => { this.toggleOpen('SizeUpgradeMenu') }
         })
-        
+
         let currencyUpgradesButton = new ButtonBorder(this, {
             x: width - (buttonDim / 2),
             y: height - (buttonDim / 2),
@@ -35,17 +37,32 @@ export class ClickButtons extends Scene {
         let currencyText = this.add.text(0, 0, 'Currency\nUpgrades', { color: getPrimaryFont(true), align: 'center' });
         Display.Align.In.Center(currencyText, currencyUpgradesButton.innerRect)
 
+        this.foregroundImage = 'close-eye'
+        this.foregroundToggle()
+    }
+
+    foregroundToggle() {
+        let { width } = this.game.canvas
+        if(this.foregroundToggleButton)
+            this.foregroundToggleButton.destroy()
         
-    }
-
-    update() {
-    }
-
-    toggleOpen(menuName) {
-        if(this.scene.isSleeping(menuName))
-            this.scene.run(menuName)
+        if(this.foregroundImage === 'close-eye')
+            this.foregroundImage = 'open-eye'
         else
-            this.scene.sleep(menuName)
+            this.foregroundImage = 'close-eye'
+
+        this.foregroundToggleButton = this.add.image(width - 50, 30, this.foregroundImage).setScale(0.1).setAlpha(0.5).setInteractive({cursor: 'pointer'});
+        this.foregroundToggleButton.on('pointerdown', ()=>{
+            this.toggleOpen('Foreground')
+            this.foregroundToggle()
+        })
+    }
+
+    toggleOpen(sceneName) {
+        if (this.scene.isSleeping(sceneName))
+            this.scene.run(sceneName)
+        else
+            this.scene.sleep(sceneName)
     }
 }
 

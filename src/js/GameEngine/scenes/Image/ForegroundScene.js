@@ -8,7 +8,7 @@ export class ForegroundScene extends Scene {
         this.foregroundData = [
             {},
             {},
-            { name: "foreground-3", path: "assets/levels/prototype/background/Background3Front.png" }
+            { name: "foreground-3", path: "assets/levels/prototype/foreground/Background3Front.png" }
         ]
 
         this.currentForeground = 0
