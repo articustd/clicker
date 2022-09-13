@@ -20,7 +20,7 @@ export class MessageToaster extends Scene {
                     { header: 'Dragonien', body: 'Hope nothing bad happens' }]
             },
             {
-                sizeGate: -1, timer: 120, variance: 20, queueSize: 3, messages: [
+                sizeGate: -1, timer: 900, variance: 100, queueSize: 3, messages: [
                     { header: '...', body: 'Deep rumbling can be heard from Dragonien' },
                     { header: 'Dragonien', body: 'I can feel something happening on occasion' },
                     { header: 'Dragonien', body: 'Maybe it slowed down?' },
