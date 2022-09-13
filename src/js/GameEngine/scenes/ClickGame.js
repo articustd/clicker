@@ -1,6 +1,7 @@
 import { logger } from "@util/Logging";
 import { Input, Scene } from "phaser";
-import { ClickButtons, Counters, ClickMenus, BackgroundScene, CharacterScene, ForegroundScene } from "@Scenes/index";
+import { ClickButtons, Counters, ClickMenus, MessageToaster } from "./UI";
+import { BackgroundScene, CharacterScene, ForegroundScene } from './Image'
 
 export class ClickGame extends Scene {
     text1
@@ -26,6 +27,7 @@ export class ClickGame extends Scene {
         this.scene.add('Background', BackgroundScene, true)
         this.scene.add('Character', CharacterScene, true)
         this.scene.add('Foreground', ForegroundScene, true)
+        this.scene.add('MessageToaster', MessageToaster, true)
         this.scene.add('SizeUpgradeMenu', ClickMenus, true, { title: "Size Upgrades", menu: "sizeUpgrades", sleepMenu: "CurrencyUpgradeMenu" })
         this.scene.add('CurrencyUpgradeMenu', ClickMenus, true, { title: "Currency Upgrades", menu: "currencyUpgrades", sleepMenu: "SizeUpgradeMenu" })
         this.scene.add('ClickButtons', ClickButtons, true)
