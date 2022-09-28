@@ -120,7 +120,6 @@ class MenuItem {
         scene.registry.events.on('changedata', this.handler, this)
 
         this.costButton.on('pointerup', () => {
-            logger('Here')
             this.buttonAction()
             
             this.markPurchased()
@@ -132,12 +131,12 @@ class MenuItem {
     buttonAction() {
         let counters = this.scene.scene.get('Counters')
 
-        switch(this.action) {
-            case 'PassiveStart':
-                counters.startPassive(this.stat)
-                break
+        if(this.action === 'PassiveStart') {
+            counters.startIdle(this.stat)
+            return
         }
-
+        
+        counters.addModifier(this.stat, this.action)
     }
 
     markPurchased() {

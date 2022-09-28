@@ -1,23 +1,33 @@
 import { getPrimary, getPrimaryFont, getSecondary } from "@GameEngine/utils/Theme";
 import { logger } from "@util/Logging";
+import _ from "lodash";
 import { Display, Scene } from "phaser";
 
 export class Counters extends Scene {
     CounterTexts
     _Size
     _Currency
+
+    _currencyModifiers
+    _sizeModifiers
+
     currencyClickAmount
-    currencyPassiveAmount
-    currencyPassiveRunning
+    currencyIdleAmount
+    currencyIdleRunning
     currencyRate
     currencyTick
     currencyText
+    currencyIdleBonus
+    currencyClickBonus
+
     sizeClickAmount
-    sizePassiveAmount
-    sizePassiveRunning
+    sizeIdleAmount
+    sizeIdleRunning
     sizeRate
     sizeTick
     sizeText
+    sizeIdleBonus
+    sizeClickBonus
 
     constructor() {
         super({ key: 'Counters' })
@@ -29,17 +39,26 @@ export class Counters extends Scene {
     create() {
         let { width, height } = this.game.canvas
 
+        this._sizeModifiers = []
+        this._currencyModifiers = []
+
         this.Size = 0
         this.Currency = 0
 
         this.sizeClickAmount = 1
         this.currencyClickAmount = 1
 
-        this.sizePassiveAmount = 1
-        this.currencyPassiveAmount = 1
+        this.sizeClickBonus = 1
+        this.currencyClickBonus = 1
 
-        this.sizePassiveRunning = false
-        this.currencyPassiveRunning = false
+        this.sizeIdleAmount = 1
+        this.currencyIdleAmount = 1
+
+        this.sizeIdleBonus = 1
+        this.currencyIdleBonus = 1
+
+        this.sizeIdleRunning = false
+        this.currencyIdleRunning = false
 
         this.sizeRate = 60
         this.currencyRate = 60
@@ -68,22 +87,22 @@ export class Counters extends Scene {
     }
 
     update() {
-        if (this.sizePassiveRunning) {
+        if (this.sizeIdleRunning) {
             this.sizeTick += 1
 
             if (this.sizeTick >= this.sizeRate) {
-                this.Size += this.sizePassiveAmount
+                this.Size += this.sizeIdleBonus
                 this.setCounterText()
                 this.sizeTick -= this.sizeRate
             }
 
         }
 
-        if (this.currencyPassiveRunning) {
+        if (this.currencyIdleRunning) {
             this.currencyTick += 1
 
             if (this.currencyTick >= this.currencyRate) {
-                this.Currency += this.currencyPassiveAmount
+                this.Currency += this.currencyIdleBonus
                 this.setCounterText()
                 this.currencyTick -= this.currencyRate
             }
@@ -93,18 +112,32 @@ export class Counters extends Scene {
     get Currency() { return this._Currency }
     set Currency(Currency) { this._Currency = Currency; this.registry.set('currency', this._Currency) }
 
+    get currencyModifiers() {return this._currencyModifiers}
+    set currencyModifiers(currencyModifiers) {
+        this._currencyModifiers = currencyModifiers
+        this.currencyClickBonus = this.getBonus(currencyModifiers, this.currencyClickAmount, 'click')
+        this.currencyIdleBonus = this.getBonus(currencyModifiers, this.currencyIdleAmount, 'idle')
+    }
+
     get Size() { return this._Size }
     set Size(Size) { this._Size = Size; this.registry.set(`size`, this._Size) }
+    
+    get sizeModifiers() {return this._sizeModifiers}
+    set sizeModifiers(sizeModifiers) {
+        this._sizeModifiers = sizeModifiers
+        this.sizeClickBonus = this.getBonus(sizeModifiers, this.sizeClickAmount, 'click')
+        this.sizeIdleBonus = this.getBonus(sizeModifiers, this.sizeIdleAmount, 'idle')
+    }
 
     increaseCount() {
-        this.Size += this.sizeClickAmount
-        this.Currency += this.currencyClickAmount
+        this.Size += this.sizeClickBonus
+        this.Currency += this.currencyClickBonus
         this.setCounterText()
     }
 
     decreaseCount() {
-        this.Size -= this.sizeClickAmount
-        this.Currency -= this.currencyClickAmount
+        this.Size -= this.sizeClickBonus
+        this.Currency -= this.currencyClickBonus
         this.setCounterText()
     }
 
@@ -122,38 +155,69 @@ export class Counters extends Scene {
         this.sizeText.setText([
             `Size`,
             this.Size,
-            `${this.getSizePassivePerSec()}/s`
+            `${this.getSizeIdlePerSec()}/s`
         ])
     }
 
-    getSizePassivePerSec() {
-        if (!this.sizePassiveRunning)
+    getSizeIdlePerSec() {
+        if (!this.sizeIdleRunning)
             return 0
 
-        return this.sizePassiveAmount / (this.sizeRate / 60)
+        return this.sizeIdleBonus / (this.sizeRate / 60)
     }
 
     setCurrencyText() {
         this.currencyText.setText([
             `Currency`,
             this.Currency,
-            `${this.getCurrencyPassivePerSec()}/s`
+            `${this.getCurrencyIdlePerSec()}/s`
         ])
     }
 
-    getCurrencyPassivePerSec() {
-        if (!this.currencyPassiveRunning)
+    getCurrencyIdlePerSec() {
+        if (!this.currencyIdleRunning)
             return 0
 
-        return this.currencyPassiveAmount / (this.currencyRate / 60)
+        return this.currencyIdleBonus / (this.currencyRate / 60)
     }
 
-    startPassive(type) {
+    startIdle(type) {
         if (type === 'currency')
-            this.currencyPassiveRunning = true
+            this.currencyIdleRunning = true
         else
-            this.sizePassiveRunning = true
+            this.sizeIdleRunning = true
 
         this.setCounterText()
+    }
+
+    getBonus(modifiers, baseAmount, tickType) {
+        let totalAddition = baseAmount
+        let totalMulti = 0
+        let totalPercent = 1
+
+        _.each(_.filter(modifiers, {tickType}), ({amount, type})=>{
+            switch(type) {
+                case 'Multi':
+                    totalMulti += amount
+                    break
+                case 'Percent':
+                    totalPercent += amount
+                    break
+                default:
+                    totalAddition += amount
+            }
+        })
+
+        if(totalMulti === 0)
+            totalMulti = 1
+
+        return (totalAddition * totalMulti) * totalPercent
+    }
+
+    addModifier(stat, modifier) {
+        if(stat === 'size')
+            this.sizeModifiers = [...this._sizeModifiers, modifier]
+        else
+            this.currencyModifiers = [...this._currencyModifiers, modifier]
     }
 }

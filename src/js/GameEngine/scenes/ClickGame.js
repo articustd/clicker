@@ -73,5 +73,21 @@ export class ClickGame extends Scene {
     }
 }
 
-let sizeUpgrades = [{ title: 'Passive Size Start', desc: 'Starts the passive gain on Size', cost: 1, purchased: false, stat: 'size', action: 'PassiveStart' }]
-let currencyUpgrades = [{ title: 'Passive Currency Start', desc: 'Starts the passive gain on Currency', cost: 1, purchased: false, stat: 'currency', action: 'PassiveStart' }]
+let sizeUpgrades = [
+    { title: 'Passive Size Start', desc: 'Starts the passive gain on Size', cost: 1, purchased: false, stat: 'size', action: 'PassiveStart' },
+    { title: '+2 Size', desc: 'Add +2 to Size Idle', cost: 1, purchased: false, stat: 'size', action: {tickType: 'idle', amount: 2, type: 'Linear'} },
+    { title: '50% Size', desc: 'Add 50% to Size Idle', cost: 1, purchased: false, stat: 'size', action: {tickType: 'idle', amount: 0.5, type: 'Percent'} },
+    { title: '3x Size', desc: 'Add 3x to Size Idle', cost: 1, purchased: false, stat: 'size', action: {tickType: 'idle', amount: 3, type: 'Multi'} },
+    { title: '+2 Size Click', desc: 'Add +2 to Size Click', cost: 1, purchased: false, stat: 'size', action: {tickType: 'click', amount: 2, type: 'Linear'} },
+    { title: '50% Size Click', desc: 'Add 50% to Size Click', cost: 1, purchased: false, stat: 'size', action: {tickType: 'click', amount: 0.5, type: 'Percent'} },
+    { title: '3x Size Click', desc: 'Add 3x to Size Click', cost: 1, purchased: false, stat: 'size', action: {tickType: 'click', amount: 3, type: 'Multi'} }
+]
+let currencyUpgrades = [
+    { title: 'Passive Currency Start', desc: 'Starts the passive gain on Currency', cost: 1, purchased: false, stat: 'currency', action: 'PassiveStart' },
+    { title: '+2 Currency', desc: 'Add +2 to Currency Idle', cost: 1, purchased: false, stat: 'currency', action: {tickType: 'idle', amount: 2, type: 'Linear'} },
+    { title: '50% Currency', desc: 'Add 50% to Currency Idle', cost: 1, purchased: false, stat: 'currency', action: {tickType: 'idle', amount: 0.5, type: 'Percent'} },
+    { title: '3x Currency', desc: 'Add 3x to Currency Idle', cost: 1, purchased: false, stat: 'currency', action: {tickType: 'idle', amount: 3, type: 'Multi'} },
+    { title: '+2 Currency Click', desc: 'Add +2 to Currency Click', cost: 1, purchased: false, stat: 'currency', action: {tickType: 'click', amount: 2, type: 'Linear'} },
+    { title: '50% Currency Click', desc: 'Add 50% to Currency Click', cost: 1, purchased: false, stat: 'currency', action: {tickType: 'click', amount: 0.5, type: 'Percent'} },
+    { title: '3x Currency Click', desc: 'Add 3x to Currency Click', cost: 1, purchased: false, stat: 'currency', action: {tickType: 'click', amount: 3, type: 'Multi'} }
+]
