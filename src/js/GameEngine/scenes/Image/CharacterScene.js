@@ -10,7 +10,7 @@ export class CharacterScene extends Scene {
 
         this.characterData = [
             { name: "character-1", path: "assets/levels/prototype/character/Model-1.png", end: 100, endingScale: 1 },
-            { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 300 , endingScale: 0.6, originY: 0.95, y: 1200},
+            { name: "character-2", path: "assets/levels/prototype/character/Model-2.png", end: 300, endingScale: 0.6, originY: 0.95, y: 1200 },
             { name: "character-3", path: "assets/levels/prototype/character/Model-3.png", end: -1, scaleIncrement: 0.002, originY: 0.95, y: 1200 }
         ]
 
@@ -38,10 +38,10 @@ export class CharacterScene extends Scene {
         if (key !== 'size')
             return
 
-        this.currentScale += this.scaleModifier
+        this.currentScale += this.scaleModifier * data.sizeDiff
         this.character.setScale(this.currentScale)
 
-        if (data >= this.endSize && this.endSize > 0) {
+        if (data.size >= this.endSize && this.endSize > 0) {
             this.character.destroy()
             this.currentCharacter += 1
 
@@ -55,9 +55,9 @@ export class CharacterScene extends Scene {
 
         this.scaleModifier = this.defaultModifier
 
-        if(!originY)
+        if (!originY)
             originY = 0.9
-        if(!y)
+        if (!y)
             y = height - (height / 6)
         if (!startingScale)
             startingScale = this.defaultScale
@@ -66,8 +66,8 @@ export class CharacterScene extends Scene {
 
         if (scaleIncrement)
             this.scaleModifier = scaleIncrement
-        if(!scaleIncrement && end > 0)
-            this.scaleModifier = _.round((endingScale-startingScale)/(end - this.endSize), 3)
+        if (!scaleIncrement && end > 0)
+            this.scaleModifier = _.round((endingScale - startingScale) / (end - this.endSize), 3)
 
         this.character = this.add.image(width / 2, y, name);
         this.character.setOrigin(0.5, originY)

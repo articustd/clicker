@@ -45,7 +45,7 @@ export class BackgroundScene extends Scene {
         if (key !== 'size')
             return
 
-        if (data >= this.endSize && this.endSize > 0) {
+        if (data.size >= this.endSize && this.endSize > 0) {
             this.background.destroy()
             this.currentBackground += 1
 

@@ -120,7 +120,7 @@ export class Counters extends Scene {
     }
 
     get Size() { return this._Size }
-    set Size(Size) { this._Size = Size; this.registry.set(`size`, this._Size) }
+    set Size(Size) { let sizeDiff = Size - this._Size; this._Size = Size; this.registry.set(`size`, {size: this._Size, sizeDiff}) }
     
     get sizeModifiers() {return this._sizeModifiers}
     set sizeModifiers(sizeModifiers) {
