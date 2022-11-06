@@ -1,3 +1,4 @@
+import * as Theme  from "@GameEngine/utils/Theme";
 import { logger } from "@util/Logging";
 import _ from "lodash";
 import { Display, Geom, Scene, Scenes } from "phaser";
@@ -58,8 +59,8 @@ export class ClickMenus extends Scene {
             },
 
             slider: {
-                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 5, 0x000000),
-                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0x000000),
+                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 5, Theme.getSecondary()),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 30, 4, Theme.getPrimary()),
             },
 
             mouseWheelScroller: {
