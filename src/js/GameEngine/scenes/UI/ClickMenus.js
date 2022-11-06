@@ -90,7 +90,9 @@ export class ClickMenus extends Scene {
 
         this.events.on(Scenes.Events.WAKE, () => {
             this.scene.sleep(this.sleepMenu)
-
+            _.each(_.filter(this.menuItems, {purchased: true}), (menuItem)=> {
+                menuItem.setToBottom()
+            })
             this.panel.layout()
         })
 
@@ -125,10 +127,10 @@ class MenuItem {
             this[key] = value
         })
 
-        let menuContainer = scene.add.container(0, 0).setSize(this.width, this.height)
-        let outline = menuContainer.add(scene.add.rectangle(0, 0, this.width, this.height, 0xffffff, 0).setStrokeStyle(1, 0x000000))
+        this.menuContainer = scene.add.container(0, 0).setSize(this.width, this.height)
+        let outline = this.menuContainer.add(scene.add.rectangle(0, 0, this.width, this.height, 0xffffff, 0).setStrokeStyle(1, 0x000000))
 
-        this.titleText = menuContainer.add(scene.make.text({
+        this.titleText = this.menuContainer.add(scene.make.text({
             x: -(this.width / 2) + (this.width / 8) + 10,
             y: 0,
             text: this.title,
@@ -140,7 +142,7 @@ class MenuItem {
             }
         }).setPadding(20, 0, 20, 0));
 
-        this.descText = menuContainer.add(scene.make.text({
+        this.descText = this.menuContainer.add(scene.make.text({
             x: 0,
             y: 0,
             text: this.desc,
@@ -153,9 +155,9 @@ class MenuItem {
         }).setPadding(20, 0, 20, 0))
 
         this.costButton = scene.add.rectangle(this.width / 2 - (this.width / 8), 0, (this.width / 4) - 10, this.height - 10, 0x808080, 1)
-        menuContainer.add(this.costButton)
+        this.menuContainer.add(this.costButton)
         this.costText = scene.add.text(this.width / 2 - (this.width / 8), 0, `Cost: ${this.cost}`, { color: '#000000' }).setOrigin(0.5, 0.5)
-        menuContainer.add(this.costText)
+        this.menuContainer.add(this.costText)
 
         scene.registry.events.on('changedata', this.handler, this)
 
@@ -166,7 +168,7 @@ class MenuItem {
         })
 
         this.checkBuyable(scene.registry.get('currency'))
-        sizer.add(menuContainer)
+        sizer.add(this.menuContainer)
     }
 
     buttonAction() {
@@ -178,6 +180,11 @@ class MenuItem {
         }
 
         counters.addModifier(this.stat, this.action)
+    }
+
+    setToBottom() {
+        this.sizer.remove(this.menuContainer)
+        this.sizer.add(this.menuContainer)
     }
 
     markPurchased() {
