@@ -1,8 +1,5 @@
 {
     "compilerOptions": {
-        "jsx": "react",
-        "target": "ES6",
-        "module": "ES6",
         "allowSyntheticDefaultImports": true,
         "baseUrl": "./",
         "paths": {
@@ -14,6 +11,6 @@
         }
     },
     "exclude": [
-        "node_modules/*", "story/*", "dist/*", ".github/*", ".vscode/*", "vendor/*"
+        "node_modules/*", "dist/*", ".github/*", ".vscode/*"
     ]
 }

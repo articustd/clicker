@@ -19,7 +19,7 @@ export class ClickMenus extends Scene {
         this.sleepMenu = data.sleepMenu
         this.menuItems = []
     }
-    
+
     create() {
         let { width, height } = this.game.canvas
         let transparentLayer = this.add.rectangle(width / 2, height / 2, width, height, 0x000000, 0.5).setInteractive({ cursor: 'pointer' });
@@ -28,34 +28,70 @@ export class ClickMenus extends Scene {
             this.scene.sleep()
         })
 
-        let [menuWidth, menuHeight] = [width - (100 * 2), height / 2 + 250]
-        let menuWindow = this.add.rectangle(width / 2, height / 2, width, menuHeight, 0xffffff, 0.9).setInteractive();
-        menuWindow.on('pointerdown', () => {
-            logger('Clicked Menu Window')
-        })
+        let menuHeight = height / 2 + 250
 
-        let menuTitleContainer = this.add.rectangle(0, 0, menuWidth, 50, 0xffffff, 0);
-        Display.Align.In.TopCenter(menuTitleContainer, menuWindow)
+        this.panel = this.rexUI.add.scrollablePanel({
+            x: width / 2,
+            y: height / 2,
+            width: width,
+            height: menuHeight,
 
-        this.menuTitle = this.add.text(0, 0, this.title, { color: '#000000' });
-        Display.Align.In.Center(this.menuTitle, menuTitleContainer)
+            scrollMode: 0,
 
-        let x = width / 2
-        let y = this.menuTitle.y + 100
-        _.each(this.registry.get(this.menu), (data) => {
-            this.menuItems.push(new MenuItem(this, { ...data, width: width - 100, height: 60, x, y }))
-            y += 60
-        })
+            background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, 0xffffff, 0.8),
+
+            panel: {
+                child: this.rexUI.add.fixWidthSizer({
+                    space: {
+                        left: 3,
+                        right: 3,
+                        top: 3,
+                        bottom: 3,
+                        item: 8,
+                        line: 8,
+                    },
+                }),
+                mask: {
+                    mask:true,
+                    padding: 1,
+                }
+            },
+
+            slider: {
+                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 5, 0x000000),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 8, 0x000000),
+            },
+
+            mouseWheelScroller: {
+                focus: false,
+                speed: 0.1
+            },
+
+            header: this.rexUI.add.label({
+                height: 50,
+                orientation: 0,
+                align: 'center',
+                text: this.add.text(0, 0, this.title, { color: '#000000' })
+            }),
+
+            space: {
+                left: 10,
+                right: 10,
+                top: 10,
+                bottom: 10,
+
+                panel: 10,
+                header: 10,
+                footer: 10,
+            }
+        }).layout();
+
+        updatePanel(this.panel, width)
 
         this.events.on(Scenes.Events.WAKE, () => {
             this.scene.sleep(this.sleepMenu)
-            let currency = this.scene.get('Counters').Currency
-            
-            _.each(this.menuItems, (menuItem) => {
-                if(!menuItem.purchased)
-                    menuItem.checkBuyable(currency)
-            })
-            // Check every MenuItem to see if they need to be active
+
+            this.panel.layout()
         })
 
         this.scene.sleep()
@@ -64,26 +100,36 @@ export class ClickMenus extends Scene {
     update() { }
 }
 
+var updatePanel = function (panel, width) {
+    let scene = panel.scene
+    let sizer = panel.getElement('panel')
+
+    sizer.clear(true);
+    _.each(scene.registry.get(scene.menu), (data) => {
+        scene.menuItems.push(new MenuItem(scene, sizer, { ...data, width: width - 50, height: 60 }))
+    })
+}
+
 class MenuItem {
-    x
-    y
     width
     height
     title
+    desc
 
-    constructor(scene, menuItemData) {
+    constructor(scene, sizer, menuItemData) {
         this.scene = scene
+        this.sizer = sizer
         this.purchased = false
+
         _.each(menuItemData, (value, key) => {
             this[key] = value
         })
 
-        let container = scene.add.rectangle(this.x, this.y, this.width, this.height, 0xffffff, 0)
+        let menuContainer = scene.add.container(0, 0).setSize(this.width, this.height)
+        let outline = menuContainer.add(scene.add.rectangle(0, 0, this.width, this.height, 0xffffff, 0).setStrokeStyle(1, 0x000000))
 
-        let titleContainer = scene.add.rectangle(0, 0, this.width / 4, this.height, 0x0000ff, 0);
-        Display.Align.In.LeftCenter(titleContainer, container)
-        this.titleText = scene.make.text({
-            x: 0,
+        this.titleText = menuContainer.add(scene.make.text({
+            x: -(this.width / 2) + (this.width / 8) + 10,
             y: 0,
             text: this.title,
             origin: { x: 0.5, y: 0.5 },
@@ -92,12 +138,9 @@ class MenuItem {
                 fill: '#000000',
                 wordWrap: { width: this.width / 4 }
             }
-        });
-        Display.Align.In.Center(this.titleText, titleContainer)
+        }).setPadding(20, 0, 20, 0));
 
-        let descContainer = scene.add.rectangle(0, 0, this.width / 2, this.height, 0x00ff00, 0);
-        Display.Align.In.Center(descContainer, container)
-        this.descText = scene.make.text({
+        this.descText = menuContainer.add(scene.make.text({
             x: 0,
             y: 0,
             text: this.desc,
@@ -107,35 +150,33 @@ class MenuItem {
                 fill: '#000000',
                 wordWrap: { width: this.width / 2 }
             }
-        });
-        Display.Align.In.Center(this.descText, descContainer)
+        }).setPadding(20, 0, 20, 0))
 
-        let costContainer = scene.add.rectangle(0, 0, this.width / 4, this.height, 0xff0000, 0);
-        this.costButton = scene.add.rectangle(0, 0, costContainer.width - 10, costContainer.height - 10, 0x808080, 1)
-        Display.Align.In.RightCenter(costContainer, container)
-        Display.Align.In.Center(this.costButton, costContainer)
-        this.costText = scene.add.text(0, 0, `Cost: ${this.cost}`, { color: '#000000' });
-        Display.Align.In.Center(this.costText, costContainer)
+        this.costButton = scene.add.rectangle(this.width / 2 - (this.width / 8), 0, (this.width / 4) - 10, this.height - 10, 0x808080, 1)
+        menuContainer.add(this.costButton)
+        this.costText = scene.add.text(this.width / 2 - (this.width / 8), 0, `Cost: ${this.cost}`, { color: '#000000' }).setOrigin(0.5, 0.5)
+        menuContainer.add(this.costText)
 
         scene.registry.events.on('changedata', this.handler, this)
 
         this.costButton.on('pointerup', () => {
             this.buttonAction()
-            
+
             this.markPurchased()
         })
 
         this.checkBuyable(scene.registry.get('currency'))
+        sizer.add(menuContainer)
     }
 
     buttonAction() {
         let counters = this.scene.scene.get('Counters')
 
-        if(this.action === 'PassiveStart') {
+        if (this.action === 'PassiveStart') {
             counters.startIdle(this.stat)
             return
         }
-        
+
         counters.addModifier(this.stat, this.action)
     }
 
